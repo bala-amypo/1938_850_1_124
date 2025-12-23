@@ -26,7 +26,6 @@ public class PurchaseOrder {
     public PurchaseOrder() {}
     
     public PurchaseOrder(Long id, String poNumber, BigDecimal amount, LocalDate dateIssued, String notes, Supplier supplier, SpendCategory category) {
-        this.id = id;
         this.poNumber = poNumber;
         this.amount = amount;
         this.dateIssued = dateIssued;

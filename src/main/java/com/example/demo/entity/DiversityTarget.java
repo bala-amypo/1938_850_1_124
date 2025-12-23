@@ -19,7 +19,6 @@ public class DiversityTarget {
     public DiversityTarget() {}
     
     public DiversityTarget(Long id, int targetYear, Double targetPercentage, Boolean active, DiversityClassification classification) {
-        this.id = id;
         this.targetYear = targetYear;
         this.targetPercentage = targetPercentage;
         this.active = active;

@@ -24,7 +24,7 @@ public class DiversityClassification {
     public DiversityClassification() {}
     
     public DiversityClassification(Long id, String code, String description, Boolean active, Set<Supplier> suppliers, Set<DiversityTarget> diversityTargets) {
-        this.id = id;
+
         this.code = code;
         this.description = description;
         this.active = active;

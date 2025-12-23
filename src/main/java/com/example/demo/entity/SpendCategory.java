@@ -18,7 +18,6 @@ public class SpendCategory {
     public SpendCategory() {}
     
     public SpendCategory(Long id, String name, Boolean active, Set<PurchaseOrder> purchaseOrders) {
-        this.id = id;
         this.name = name;
         this.active = active;
         this.purchaseOrders = purchaseOrders;
