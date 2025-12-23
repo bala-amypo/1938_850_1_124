@@ -2,7 +2,7 @@ package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import java.util.Set;
-import lombok.*;
+
 @Entity
 @Table(name = "spend_categories")
 public class SpendCategory {
@@ -18,6 +18,7 @@ public class SpendCategory {
     public SpendCategory() {}
     
     public SpendCategory(Long id, String name, Boolean active, Set<PurchaseOrder> purchaseOrders) {
+        
         this.name = name;
         this.active = active;
         this.purchaseOrders = purchaseOrders;

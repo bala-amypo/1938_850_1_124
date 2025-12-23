@@ -1,6 +1,7 @@
 package com.example.demo.entity;
+
 import jakarta.persistence.*;
-import lombok.*;
+
 @Entity
 @Table(name = "diversity_targets")
 public class DiversityTarget {
@@ -18,6 +19,7 @@ public class DiversityTarget {
     public DiversityTarget() {}
     
     public DiversityTarget(Long id, int targetYear, Double targetPercentage, Boolean active, DiversityClassification classification) {
+    
         this.targetYear = targetYear;
         this.targetPercentage = targetPercentage;
         this.active = active;

@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+
 @Entity
 @Table(name = "suppliers")
 public class Supplier {
@@ -35,7 +35,7 @@ public class Supplier {
     public Supplier(Long id, String name, String email, String registrationNumber, Boolean isActive,
             LocalDateTime createdAt, LocalDateTime updatedAt, Set<DiversityClassification> diversityClassifications,
             Set<PurchaseOrder> purchaseOrders) {
-    
+
         this.name = name;
         this.email = email;
         this.registrationNumber = registrationNumber;
@@ -55,6 +55,13 @@ public class Supplier {
     }
 
     // Getters and Setters
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;

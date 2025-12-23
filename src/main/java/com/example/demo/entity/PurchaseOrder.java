@@ -3,7 +3,7 @@ package com.example.demo.entity;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import lombok.*;
+
 @Entity
 @Table(name = "purchase_orders")
 public class PurchaseOrder {
@@ -26,6 +26,7 @@ public class PurchaseOrder {
     public PurchaseOrder() {}
     
     public PurchaseOrder(Long id, String poNumber, BigDecimal amount, LocalDate dateIssued, String notes, Supplier supplier, SpendCategory category) {
+        
         this.poNumber = poNumber;
         this.amount = amount;
         this.dateIssued = dateIssued;
