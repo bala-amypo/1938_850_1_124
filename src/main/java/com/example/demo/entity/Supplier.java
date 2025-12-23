@@ -35,7 +35,7 @@ public class Supplier {
     public Supplier(Long id, String name, String email, String registrationNumber, Boolean isActive,
             LocalDateTime createdAt, LocalDateTime updatedAt, Set<DiversityClassification> diversityClassifications,
             Set<PurchaseOrder> purchaseOrders) {
-        this.id = id;
+    
         this.name = name;
         this.email = email;
         this.registrationNumber = registrationNumber;
