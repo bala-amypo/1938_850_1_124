@@ -3,7 +3,7 @@ package com.example.demo.entity;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-
+import lombok.*;
 @Entity
 @Table(name = "purchase_orders")
 public class PurchaseOrder {

@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
+import lombok.*;
 @Entity
 @Table(name = "suppliers")
 public class Supplier {
