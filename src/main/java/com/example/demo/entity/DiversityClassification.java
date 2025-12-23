@@ -3,7 +3,7 @@ package com.example.demo.entity;
 import jakarta.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
-
+import lombok.*;
 @Entity
 @Table(name = "diversity_classifications")
 public class DiversityClassification {
