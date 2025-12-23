@@ -18,7 +18,7 @@ public class UserAccount {
     
     public UserAccount() {}
     
-    public UserAccount(, String email, String password, String role, String fullName) {
+    public UserAccount(Long id,String email, String password, String role, String fullName) {
         this.email = email;
         this.password = password;
         this.role = role;
@@ -26,7 +26,6 @@ public class UserAccount {
     }
     
     // Getters and Setters
-
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
     
