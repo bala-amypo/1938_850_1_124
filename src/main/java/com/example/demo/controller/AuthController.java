@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*") // <--- ADD THIS LINE TO FIX "FAILED TO FETCH"
 public class AuthController {
 
     private final UserAccountService userService;
