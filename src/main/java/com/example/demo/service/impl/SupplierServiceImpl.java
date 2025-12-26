@@ -23,16 +23,17 @@ public class SupplierServiceImpl implements SupplierService {
 
     @Override
     public Supplier updateSupplier(Long id, Supplier supplier) {
-        Supplier existing = getSupplier(id);
+        // Updated to use the correct method name: getSupplierById
+        Supplier existing = getSupplierById(id);
         existing.setName(supplier.getName());
         existing.setEmail(supplier.getEmail());
         existing.setRegistrationNumber(supplier.getRegistrationNumber());
         return supplierRepository.save(existing);
     }
 
-    // FIX: Renamed to match the abstract method name in the interface
+    // FIX: Renamed from getSupplier to getSupplierById to match the interface
     @Override
-    public Supplier getSupplier(Long id) {
+    public Supplier getSupplierById(Long id) {
         return supplierRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Supplier not found"));
     }
@@ -44,8 +45,8 @@ public class SupplierServiceImpl implements SupplierService {
 
     @Override
     public Supplier deactivateSupplier(Long id) {
-        Supplier supplier = getSupplier(id);
-        supplier.setIsActive(false); // Soft-deactivation logic
+        Supplier supplier = getSupplierById(id);
+        supplier.setIsActive(false); // Requirement: Soft-deactivation logic
         return supplierRepository.save(supplier);
     }
 }
