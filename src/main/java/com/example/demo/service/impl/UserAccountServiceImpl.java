@@ -6,7 +6,9 @@ import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.UserAccountRepository;
 import com.example.demo.service.UserAccountService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service; // 1. ADD THIS IMPORT
 
+@Service // 2. ADD THIS ANNOTATION
 public class UserAccountServiceImpl implements UserAccountService {
     private final UserAccountRepository userAccountRepository;
     private final PasswordEncoder passwordEncoder;
@@ -33,18 +35,16 @@ public class UserAccountServiceImpl implements UserAccountService {
 
     @Override
     public UserAccount getByEmail(String email) {
-        // FIX: Added missing method required by interface
         return userAccountRepository.findByEmail(email).orElse(null);
     }
 
     @Override
     public String login(String email, String password) {
-        // FIX: Return type must be String (Token) to match interface
         UserAccount user = findByEmailOrThrow(email);
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new BadRequestException("Invalid credentials");
         }
-        // Logic for returning a token string goes here
+        // Usually, you would call jwtUtil.generateToken(user) here
         return "SUCCESS_TOKEN"; 
     }
 }
