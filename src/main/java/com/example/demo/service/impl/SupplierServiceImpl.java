@@ -11,7 +11,7 @@ import java.util.List;
 public class SupplierServiceImpl implements SupplierService {
     private final SupplierRepository supplierRepository;
 
-    // TECHNICAL CONSTRAINT: You must use Constructor Injection
+    // TECHNICAL CONSTRAINT: Constructor Injection is mandatory
     public SupplierServiceImpl(SupplierRepository supplierRepository) {
         this.supplierRepository = supplierRepository;
     }
@@ -23,17 +23,16 @@ public class SupplierServiceImpl implements SupplierService {
 
     @Override
     public Supplier updateSupplier(Long id, Supplier supplier) {
-        Supplier existing = getSupplierById(id);
+        Supplier existing = getSupplier(id);
         existing.setName(supplier.getName());
         existing.setEmail(supplier.getEmail());
         existing.setRegistrationNumber(supplier.getRegistrationNumber());
-        // Add other field updates as defined in your Supplier entity
         return supplierRepository.save(existing);
     }
 
+    // FIX: Renamed to match the abstract method in SupplierService
     @Override
-    public Supplier getSupplierById(Long id) {
-        // Signatures must match the interface exactly
+    public Supplier getSupplier(Long id) {
         return supplierRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Supplier not found"));
     }
@@ -45,9 +44,14 @@ public class SupplierServiceImpl implements SupplierService {
 
     @Override
     public Supplier deactivateSupplier(Long id) {
-        // Soft-deactivation logic using the isActive flag
-        Supplier supplier = getSupplierById(id);
-        supplier.setIsActive(false);
+        Supplier supplier = getSupplier(id);
+        supplier.setIsActive(false); // Requirement: soft-deactivation
         return supplierRepository.save(supplier);
+    }
+
+    // Optional: Keep this if other parts of your code call it, 
+    // but the interface requires getSupplier(Long)
+    public Supplier getSupplierById(Long id) {
+        return getSupplier(id);
     }
 }
