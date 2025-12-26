@@ -21,16 +21,6 @@ public class SupplierServiceImpl implements SupplierService {
         return supplierRepository.save(supplier);
     }
 
-    // FIX: Ensure this signature matches SupplierService interface exactly
-    @Override
-    public Supplier updateSupplier(Long id, Supplier supplier) {
-        Supplier existing = getSupplier(id);
-        existing.setName(supplier.getName());
-        existing.setEmail(supplier.getEmail());
-        existing.setRegistrationNumber(supplier.getRegistrationNumber());
-        // Ensure fields like phone/address are updated if they exist in your entity
-        return supplierRepository.save(existing);
-    }
 
     @Override
     public Supplier getSupplier(Long id) {
