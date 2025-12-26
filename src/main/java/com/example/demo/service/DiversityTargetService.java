@@ -6,4 +6,9 @@ import java.util.List;
 public interface DiversityTargetService {
     DiversityTarget createTarget(DiversityTarget target);
     List<DiversityTarget> getActiveTargets();
+    
+    // ADD THESE THREE METHODS:
+    List<DiversityTarget> getTargetsByYear(int year);
+    List<DiversityTarget> getAllTargets();
+    void deactivateTarget(long id);
 }

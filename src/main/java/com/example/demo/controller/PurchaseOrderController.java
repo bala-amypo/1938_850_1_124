@@ -2,7 +2,6 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.PurchaseOrder;
 import com.example.demo.service.PurchaseOrderService;
-import org.springframework.beans.factory.annotation.Autowired; // Added import
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -11,8 +10,12 @@ import java.util.List;
 @RequestMapping("/api/purchase-orders")
 public class PurchaseOrderController {
 
-    @Autowired // Field injection
-    private PurchaseOrderService poService;
+    private final PurchaseOrderService poService;
+
+    // ADD THIS CONSTRUCTOR: Fixes the compilation error at line 104 of your test
+    public PurchaseOrderController(PurchaseOrderService poService) {
+        this.poService = poService;
+    }
 
     @PostMapping
     public ResponseEntity<PurchaseOrder> create(@RequestBody PurchaseOrder order) {

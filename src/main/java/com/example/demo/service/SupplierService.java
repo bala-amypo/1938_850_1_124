@@ -5,7 +5,10 @@ import java.util.List;
 
 public interface SupplierService {
     Supplier createSupplier(Supplier supplier);
-    Supplier getSupplier(Long id);
+    
+    // RENAME THIS to match what the test expects
+    Supplier getSupplierById(long id); 
+    
     List<Supplier> getAllSuppliers();
     Supplier deactivateSupplier(Long id);
 }
