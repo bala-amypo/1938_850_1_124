@@ -1,4 +1,4 @@
-package com.example.demo.service.impl;
+package com.example.demo.service.impl.PurchaseOrderServiceImpl;
 
 import com.example.demo.entity.PurchaseOrder;
 import com.example.demo.entity.Supplier;
