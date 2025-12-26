@@ -11,7 +11,7 @@ import java.util.List;
 public class SupplierServiceImpl implements SupplierService {
     private final SupplierRepository supplierRepository;
 
-    // TECHNICAL CONSTRAINT: Constructor Injection is required.
+    // TECHNICAL CONSTRAINT: You must use Constructor Injection
     public SupplierServiceImpl(SupplierRepository supplierRepository) {
         this.supplierRepository = supplierRepository;
     }
@@ -21,19 +21,19 @@ public class SupplierServiceImpl implements SupplierService {
         return supplierRepository.save(supplier);
     }
 
-    // FIX: Renamed method to match the interface signature.
     @Override
     public Supplier updateSupplier(Long id, Supplier supplier) {
-        Supplier existing = getSupplier(id);
+        Supplier existing = getSupplierById(id);
         existing.setName(supplier.getName());
         existing.setEmail(supplier.getEmail());
         existing.setRegistrationNumber(supplier.getRegistrationNumber());
+        // Add other field updates as defined in your Supplier entity
         return supplierRepository.save(existing);
     }
 
-    // FIX: Renamed from getSupplierById to getSupplier to fix line 11 error.
     @Override
-    public Supplier getSupplier(Long id) {
+    public Supplier getSupplierById(Long id) {
+        // Signatures must match the interface exactly
         return supplierRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Supplier not found"));
     }
@@ -43,11 +43,11 @@ public class SupplierServiceImpl implements SupplierService {
         return supplierRepository.findAll();
     }
 
-    // FIX: Ensure this return type matches your interface (Supplier or void).
     @Override
     public Supplier deactivateSupplier(Long id) {
-        Supplier supplier = getSupplier(id);
-        supplier.setIsActive(false); // Requirement: soft-deactivation.
+        // Soft-deactivation logic using the isActive flag
+        Supplier supplier = getSupplierById(id);
+        supplier.setIsActive(false);
         return supplierRepository.save(supplier);
     }
 }
