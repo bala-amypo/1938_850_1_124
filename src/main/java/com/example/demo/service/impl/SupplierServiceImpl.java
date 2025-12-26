@@ -11,7 +11,7 @@ import java.util.List;
 public class SupplierServiceImpl implements SupplierService {
     private final SupplierRepository supplierRepository;
 
-    // TECHNICAL CONSTRAINT: You must use Constructor Injection
+    // TECHNICAL CONSTRAINT: Constructor Injection is required.
     public SupplierServiceImpl(SupplierRepository supplierRepository) {
         this.supplierRepository = supplierRepository;
     }
@@ -21,20 +21,19 @@ public class SupplierServiceImpl implements SupplierService {
         return supplierRepository.save(supplier);
     }
 
+    // FIX: Renamed method to match the interface signature.
     @Override
     public Supplier updateSupplier(Long id, Supplier supplier) {
-        Supplier existing = getSupplierById(id);
+        Supplier existing = getSupplier(id);
         existing.setName(supplier.getName());
         existing.setEmail(supplier.getEmail());
         existing.setRegistrationNumber(supplier.getRegistrationNumber());
-        existing.setPhone(supplier.getPhone());
-        existing.setAddress(supplier.getAddress());
         return supplierRepository.save(existing);
     }
 
-    // FIX: This method signature must match the interface exactly
+    // FIX: Renamed from getSupplierById to getSupplier to fix line 11 error.
     @Override
-    public Supplier getSupplierById(Long id) {
+    public Supplier getSupplier(Long id) {
         return supplierRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Supplier not found"));
     }
@@ -44,10 +43,11 @@ public class SupplierServiceImpl implements SupplierService {
         return supplierRepository.findAll();
     }
 
+    // FIX: Ensure this return type matches your interface (Supplier or void).
     @Override
     public Supplier deactivateSupplier(Long id) {
-        Supplier supplier = getSupplierById(id);
-        supplier.setIsActive(false); // Requirement: Soft deactivation
+        Supplier supplier = getSupplier(id);
+        supplier.setIsActive(false); // Requirement: soft-deactivation.
         return supplierRepository.save(supplier);
     }
 }
