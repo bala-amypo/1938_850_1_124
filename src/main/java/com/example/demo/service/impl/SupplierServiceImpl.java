@@ -11,7 +11,7 @@ import java.util.List;
 public class SupplierServiceImpl implements SupplierService {
     private final SupplierRepository supplierRepository;
 
-    // TECHNICAL CONSTRAINT: Constructor Injection is mandatory
+    // TECHNICAL CONSTRAINT: Must use Constructor Injection
     public SupplierServiceImpl(SupplierRepository supplierRepository) {
         this.supplierRepository = supplierRepository;
     }
@@ -30,7 +30,7 @@ public class SupplierServiceImpl implements SupplierService {
         return supplierRepository.save(existing);
     }
 
-    // FIX: Renamed to match the abstract method in SupplierService
+    // FIX: Renamed to match the abstract method name in the interface
     @Override
     public Supplier getSupplier(Long id) {
         return supplierRepository.findById(id)
@@ -45,13 +45,7 @@ public class SupplierServiceImpl implements SupplierService {
     @Override
     public Supplier deactivateSupplier(Long id) {
         Supplier supplier = getSupplier(id);
-        supplier.setIsActive(false); // Requirement: soft-deactivation
+        supplier.setIsActive(false); // Soft-deactivation logic
         return supplierRepository.save(supplier);
-    }
-
-    // Optional: Keep this if other parts of your code call it, 
-    // but the interface requires getSupplier(Long)
-    public Supplier getSupplierById(Long id) {
-        return getSupplier(id);
     }
 }
