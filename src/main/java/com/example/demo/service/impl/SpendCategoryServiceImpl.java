@@ -1,4 +1,4 @@
-package com.example.demo.service.impl.SpendCategoryServiceImpl;
+package com.example.demo.service.impl;
 
 import com.example.demo.entity.SpendCategory;
 import com.example.demo.exception.ResourceNotFoundException;

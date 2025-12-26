@@ -1,4 +1,4 @@
-package com.example.demo.serviceimple;
+package com.example.demo.service.impl;
 
 import com.example.demo.entity.DiversityTarget;
 import com.example.demo.exception.BadRequestException;
