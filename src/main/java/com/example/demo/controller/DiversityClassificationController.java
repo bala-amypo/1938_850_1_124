@@ -2,7 +2,6 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.DiversityClassification;
 import com.example.demo.service.DiversityClassificationService;
-import org.springframework.beans.factory.annotation.Autowired; // Added import
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -11,8 +10,12 @@ import java.util.List;
 @RequestMapping("/api/classifications")
 public class DiversityClassificationController {
 
-    @Autowired // Field injection
-    private DiversityClassificationService classificationService;
+    private final DiversityClassificationService classificationService;
+
+    // ADD THIS CONSTRUCTOR: This fixes the "constructor cannot be applied to given types" error
+    public DiversityClassificationController(DiversityClassificationService classificationService) {
+        this.classificationService = classificationService;
+    }
 
     @GetMapping
     public ResponseEntity<List<DiversityClassification>> getAll() {
