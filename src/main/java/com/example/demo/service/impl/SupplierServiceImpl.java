@@ -11,7 +11,7 @@ import java.util.List;
 public class SupplierServiceImpl implements SupplierService {
     private final SupplierRepository supplierRepository;
 
-    // Technical Constraint: Constructor Injection is mandatory
+    // TECHNICAL CONSTRAINT: Must use Constructor Injection
     public SupplierServiceImpl(SupplierRepository supplierRepository) {
         this.supplierRepository = supplierRepository;
     }
@@ -23,7 +23,8 @@ public class SupplierServiceImpl implements SupplierService {
 
     @Override
     public Supplier updateSupplier(Long id, Supplier supplier) {
-        Supplier existing = getSupplierById(id);
+        // Renamed to getSupplier to match the interface method
+        Supplier existing = getSupplier(id);
         existing.setName(supplier.getName());
         existing.setEmail(supplier.getEmail());
         existing.setRegistrationNumber(supplier.getRegistrationNumber());
@@ -32,8 +33,9 @@ public class SupplierServiceImpl implements SupplierService {
         return supplierRepository.save(existing);
     }
 
+    // FIX: Renamed from getSupplierById to getSupplier to match the interface
     @Override
-    public Supplier getSupplierById(Long id) {
+    public Supplier getSupplier(Long id) {
         return supplierRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Supplier not found"));
     }
@@ -45,9 +47,8 @@ public class SupplierServiceImpl implements SupplierService {
 
     @Override
     public Supplier deactivateSupplier(Long id) {
-        // FIX: Return type must be Supplier
-        Supplier supplier = getSupplierById(id);
-        supplier.setIsActive(false); // Soft-deactivate
+        Supplier supplier = getSupplier(id);
+        supplier.setIsActive(false); // Requirement: Soft deactivation
         return supplierRepository.save(supplier);
     }
 }
