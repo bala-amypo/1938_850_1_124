@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * JwtResponse DTO: Used to send authentication data back to the client.
  */
-@service
+
 public class JwtResponse implements Serializable {
     private static final long serialVersionUID = 1L;
 
