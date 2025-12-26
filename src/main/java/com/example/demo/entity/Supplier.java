@@ -1,15 +1,17 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import lombok.Data; // Ensure Lombok is working to provide getPhone() and getAddress()
+import lombok.Data;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
 @Data
 public class Supplier {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
     private String name;
     private String registrationNumber;
     private String email;
@@ -24,7 +26,7 @@ public class Supplier {
 
     @PrePersist
     public void prePersist() {
-        this.isActive = true; // Rule: isActive defaults to true
-        this.createdAt = LocalDateTime.now(); // Rule: createdAt auto-generated
+        this.isActive = true;
+        this.createdAt = LocalDateTime.now();
     }
 }
