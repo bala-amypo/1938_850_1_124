@@ -13,11 +13,18 @@ public class JwtResponse implements Serializable {
     private String email;
     private String role;
 
-    // 1. Default constructor (Required by JSON libraries like Jackson)
+    // 1. Default constructor
     public JwtResponse() {
     }
 
-    // 2. Parameterized constructor
+    // --- ADD THIS NEW CONSTRUCTOR HERE ---
+    // This fixes the "no suitable constructor found" error
+    public JwtResponse(String token) {
+        this.token = token;
+    }
+    // -------------------------------------
+
+    // 2. Parameterized constructor (Keep this)
     public JwtResponse(String token, Long userId, String email, String role) {
         this.token = token;
         this.userId = userId;
@@ -25,7 +32,7 @@ public class JwtResponse implements Serializable {
         this.role = role;
     }
 
-    // 3. Getters and Setters (Required for JSON serialization)
+    // 3. Getters and Setters
     public String getToken() { return token; }
     public void setToken(String token) { this.token = token; }
 
@@ -38,7 +45,6 @@ public class JwtResponse implements Serializable {
     public String getRole() { return role; }
     public void setRole(String role) { this.role = role; }
 
-    // 4. toString method (Helps you see data in your console/logs)
     @Override
     public String toString() {
         return "JwtResponse{" +
