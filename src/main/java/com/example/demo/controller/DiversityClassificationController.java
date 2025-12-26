@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.DiversityClassification;
 import com.example.demo.service.DiversityClassificationService;
+import org.springframework.beans.factory.annotation.Autowired; // Added import
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -10,11 +11,8 @@ import java.util.List;
 @RequestMapping("/api/classifications")
 public class DiversityClassificationController {
 
-    private final DiversityClassificationService classificationService;
-
-    public DiversityClassificationController(DiversityClassificationService classificationService) {
-        this.classificationService = classificationService;
-    }
+    @Autowired // Field injection
+    private DiversityClassificationService classificationService;
 
     @GetMapping
     public ResponseEntity<List<DiversityClassification>> getAll() {

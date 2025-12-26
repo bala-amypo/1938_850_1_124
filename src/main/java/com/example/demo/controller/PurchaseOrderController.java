@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.PurchaseOrder;
 import com.example.demo.service.PurchaseOrderService;
+import org.springframework.beans.factory.annotation.Autowired; // Added import
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -10,11 +11,8 @@ import java.util.List;
 @RequestMapping("/api/purchase-orders")
 public class PurchaseOrderController {
 
-    private final PurchaseOrderService poService;
-
-    public PurchaseOrderController(PurchaseOrderService poService) {
-        this.poService = poService;
-    }
+    @Autowired // Field injection
+    private PurchaseOrderService poService;
 
     @PostMapping
     public ResponseEntity<PurchaseOrder> create(@RequestBody PurchaseOrder order) {
