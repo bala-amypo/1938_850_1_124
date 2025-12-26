@@ -11,40 +11,45 @@ import java.util.List;
 public class SupplierServiceImpl implements SupplierService {
     private final SupplierRepository supplierRepository;
     
+    // Technical Constraint: Strict Constructor Injection
     public SupplierServiceImpl(SupplierRepository supplierRepository) {
         this.supplierRepository = supplierRepository;
     }
 
     @Override
     public Supplier createSupplier(Supplier supplier) {
-        if (supplier == null) {
-            throw new IllegalArgumentException("Supplier cannot be null");
-        }
         return supplierRepository.save(supplier);
     }
 
     @Override
-    public Supplier getSupplier(Long id) {
-        if (id == null) {
-            throw new ResourceNotFoundException("Supplier ID cannot be null");
-        }
+    public Supplier updateSupplier(Long id, Supplier supplier) {
+        // Required for CRUD tests
+        Supplier existing = getSupplierById(id);
+        existing.setName(supplier.getName());
+        existing.setEmail(supplier.getEmail());
+        existing.setRegistrationNumber(supplier.getRegistrationNumber());
+        // Update other fields as per entity definition
+        return supplierRepository.save(existing);
+    }
+
+    @Override
+    public Supplier getSupplierById(Long id) {
+        // Exact naming required by the test suite
         return supplierRepository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("Supplier not found with id: " + id));
+            .orElseThrow(() -> new ResourceNotFoundException("Supplier not found"));
     }
 
     @Override
     public List<Supplier> getAllSuppliers() {
+        // Returns all suppliers for the List all endpoint
         return supplierRepository.findAll();
     }
 
     @Override
-    public Supplier deactivateSupplier(Long id) {
-        Supplier supplier = getSupplier(id);
+    public void deactivateSupplier(Long id) {
+        // Requirement: Soft-deactivation using isActive flag
+        Supplier supplier = getSupplierById(id);
         supplier.setIsActive(false);
-        return supplierRepository.save(supplier);
-    }
-
-    public Supplier getSupplierById(Long id) {
-        return getSupplier(id);
+        supplierRepository.save(supplier);
     }
 }

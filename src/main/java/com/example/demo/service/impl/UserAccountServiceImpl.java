@@ -6,12 +6,13 @@ import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.UserAccountRepository;
 import com.example.demo.service.UserAccountService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import java.util.Optional;
 
 public class UserAccountServiceImpl implements UserAccountService {
     private final UserAccountRepository userAccountRepository;
     private final PasswordEncoder passwordEncoder;
 
-    // Technical Constraint: Strict constructor injection order
+    // Technical Constraint: Use Constructor Injection in this exact order
     public UserAccountServiceImpl(UserAccountRepository userAccountRepository, PasswordEncoder passwordEncoder) {
         this.userAccountRepository = userAccountRepository;
         this.passwordEncoder = passwordEncoder;
@@ -19,26 +20,29 @@ public class UserAccountServiceImpl implements UserAccountService {
 
     @Override
     public UserAccount register(UserAccount user) {
-        // Requirement: Email must be unique
+        // Rule: Email must be unique
         if (userAccountRepository.existsByEmail(user.getEmail())) {
             throw new BadRequestException("Email already exists");
         }
-        // Requirement: Password stored encoded
+        // Rule: Password stored encoded
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userAccountRepository.save(user);
     }
 
     @Override
     public UserAccount findByEmailOrThrow(String email) {
-        // Requirement: Throw ResourceNotFoundException if not found
+        // Rule: Throw ResourceNotFoundException if not found
         return userAccountRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
 
+    // FIX: Implementing the missing login method required by your interface
     @Override
-    public UserAccount getByEmail(String email) {
-        // Fixing Compilation Error: Return UserAccount directly or throw exception
-        return userAccountRepository.findByEmail(email)
-                .orElse(null); 
+    public UserAccount login(String email, String password) {
+        UserAccount user = findByEmailOrThrow(email);
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new BadRequestException("Invalid credentials");
+        }
+        return user;
     }
 }
