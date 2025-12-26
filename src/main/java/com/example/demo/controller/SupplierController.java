@@ -23,7 +23,8 @@ public class SupplierController {
 
     @GetMapping("/{id}")
     public Supplier getById(@PathVariable Long id) {
-        return supplierService.getSupplierById(id);
+        // FIXED: Changed from getSupplierById to getSupplier
+        return supplierService.getSupplier(id); 
     }
 
     @GetMapping
