@@ -10,8 +10,8 @@ import java.util.List;
 @Service
 public class SupplierServiceImpl implements SupplierService {
     private final SupplierRepository supplierRepository;
-    
-    // Technical Constraint: Strict Constructor Injection
+
+    // TECHNICAL CONSTRAINT: Constructor Injection is mandatory
     public SupplierServiceImpl(SupplierRepository supplierRepository) {
         this.supplierRepository = supplierRepository;
     }
@@ -23,33 +23,35 @@ public class SupplierServiceImpl implements SupplierService {
 
     @Override
     public Supplier updateSupplier(Long id, Supplier supplier) {
-        // Required for CRUD tests
-        Supplier existing = getSupplierById(id);
+        Supplier existing = getSupplier(id);
         existing.setName(supplier.getName());
         existing.setEmail(supplier.getEmail());
         existing.setRegistrationNumber(supplier.getRegistrationNumber());
-        // Update other fields as per entity definition
         return supplierRepository.save(existing);
     }
 
+    // FIX: Renamed from getSupplierById to getSupplier to match your interface
     @Override
-    public Supplier getSupplierById(Long id) {
-        // Exact naming required by the test suite
+    public Supplier getSupplier(Long id) {
         return supplierRepository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("Supplier not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Supplier not found"));
     }
 
     @Override
     public List<Supplier> getAllSuppliers() {
-        // Returns all suppliers for the List all endpoint
         return supplierRepository.findAll();
     }
 
+    // FIX: Renamed to match the exact method signature expected
     @Override
-    public void deactivateSupplier(Long id) {
-        // Requirement: Soft-deactivation using isActive flag
-        Supplier supplier = getSupplierById(id);
-        supplier.setIsActive(false);
-        supplierRepository.save(supplier);
+    public Supplier deactivateSupplier(Long id) {
+        Supplier supplier = getSupplier(id);
+        supplier.setIsActive(false); // Requirement: Soft-deactivation
+        return supplierRepository.save(supplier);
+    }
+
+    // This method ensures the test suite call for 'getSupplierById' also works
+    public Supplier getSupplierById(Long id) {
+        return getSupplier(id);
     }
 }
