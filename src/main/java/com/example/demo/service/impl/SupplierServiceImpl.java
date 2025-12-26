@@ -21,7 +21,14 @@ public class SupplierServiceImpl implements SupplierService {
         return supplierRepository.save(supplier);
     }
 
-
+    @Override
+    public Supplier updateSupplier(Long id, Supplier supplier) {
+        Supplier existing = getSupplier(id);
+        existing.setName(supplier.getName());
+        existing.setEmail(supplier.getEmail());
+        existing.setRegistrationNumber(supplier.getRegistrationNumber());
+        return supplierRepository.save(existing);
+    }
 
     // FIX: Renamed from getSupplierById to getSupplier to match the interface
     @Override
