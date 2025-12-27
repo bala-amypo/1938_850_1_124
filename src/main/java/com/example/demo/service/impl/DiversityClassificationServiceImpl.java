@@ -17,27 +17,23 @@ public class DiversityClassificationServiceImpl implements DiversityClassificati
 
     @Override
     public DiversityClassification createClassification(DiversityClassification classification) {
-        if (classification == null) {
-            throw new IllegalArgumentException("Classification cannot be null");
-        }
         return repository.save(classification);
     }
 
     @Override
-    public List<DiversityClassification> getActiveClassifications() {
-        return repository.findByActiveTrue();
-    }
-
     public List<DiversityClassification> getAllClassifications() {
         return repository.findAll();
     }
 
-    public void deactivateClassification(Long id) {
-        if (id == null) {
-            throw new ResourceNotFoundException("Classification ID cannot be null");
-        }
-        DiversityClassification classification = repository.findById(id)
+    @Override
+    public DiversityClassification getClassificationById(Long id) {
+        return repository.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Classification not found"));
+    }
+
+    @Override
+    public void deactivateClassification(Long id) {
+        DiversityClassification classification = getClassificationById(id);
         classification.setActive(false);
         repository.save(classification);
     }

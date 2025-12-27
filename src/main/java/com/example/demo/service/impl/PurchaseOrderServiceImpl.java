@@ -26,15 +26,14 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
 
     @Override
     public PurchaseOrder createPurchaseOrder(PurchaseOrder order) {
-        // Load and validate Supplier
-        Supplier supplier = supplierService.getSupplier(order.getSupplier().getId());
+        // FIX: Changed getSupplier to getSupplierById
+        Supplier supplier = supplierService.getSupplierById(order.getSupplier().getId());
         if (!supplier.getIsActive()) throw new BadRequestException("Supplier is inactive");
 
-        // Load and validate Category
+        // Ensure consistency with your SpendCategoryService method name
         SpendCategory category = spendCategoryService.getCategoryById(order.getCategory().getId());
         if (!category.getActive()) throw new BadRequestException("Category is inactive");
 
-        // Validate Amount
         if (order.getAmount() == null || order.getAmount().compareTo(BigDecimal.ZERO) <= 0) {
             throw new BadRequestException("Amount must be positive");
         }
@@ -42,8 +41,14 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
         return purchaseOrderRepository.save(order);
     }
 
+    // ADDED: Controller expects this method via the interface
     @Override
-    public List<PurchaseOrder> getOrdersBySupplier(Long supplierId) {
+    public List<PurchaseOrder> getAllPurchaseOrders() {
+        return purchaseOrderRepository.findAll();
+    }
+
+    @Override
+    public List<PurchaseOrder> getPurchaseOrdersBySupplier(Long supplierId) {
         return purchaseOrderRepository.findBySupplier_Id(supplierId);
     }
 
