@@ -5,15 +5,8 @@ import java.util.List;
 
 public interface DiversityTargetService {
     DiversityTarget createTarget(DiversityTarget target);
-    
-    List<DiversityTarget> getActiveTargets();
-
-    // ADDED: To resolve "cannot find symbol: method getAllTargets()"
+    DiversityTarget updateTarget(Long id, DiversityTarget target);
     List<DiversityTarget> getAllTargets();
-
-    // ADDED: To resolve "cannot find symbol: method getTargetsByYear(int)"
-    List<DiversityTarget> getTargetsByYear(int year);
-
-    // ADDED: To resolve "cannot find symbol: method deactivateTarget(java.lang.Long)"
-    void deactivateTarget(Long id);
+    List<DiversityTarget> getTargetsByYear(Integer year);
+    DiversityTarget deactivateTarget(Long id);
 }
