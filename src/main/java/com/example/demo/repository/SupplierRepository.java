@@ -1,7 +1,7 @@
 package com.example.demo.repository;
 
 import com.example.demo.entity.Supplier;
-import 
+import com.example.demo.service.SupplierServiceImpl;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
