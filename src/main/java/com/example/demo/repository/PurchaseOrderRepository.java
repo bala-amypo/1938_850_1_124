@@ -6,5 +6,4 @@ import java.util.List;
 
 public interface PurchaseOrderRepository extends JpaRepository<PurchaseOrder, Long> {
     List<PurchaseOrder> findBySupplier_Id(Long supplierId);
-    List<PurchaseOrder> findByCategory_Id(Long categoryId);
 }
