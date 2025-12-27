@@ -5,5 +5,13 @@ import java.util.List;
 
 public interface DiversityClassificationService {
     DiversityClassification createClassification(DiversityClassification classification);
-    List<DiversityClassification> getActiveClassifications();
+    
+    // This was named getActiveClassifications(), 
+    // but the Controller expects getAllClassifications()
+    List<DiversityClassification> getAllClassifications();
+
+    // Add these missing methods:
+    DiversityClassification getClassificationById(Long id);
+    
+    void deactivateClassification(Long id);
 }

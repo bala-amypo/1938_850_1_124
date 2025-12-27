@@ -29,16 +29,24 @@ public class DiversityTargetServiceImpl implements DiversityTargetService {
         return repository.findByActiveTrue();
     }
 
+    // ADDED: Controller expects this method
+    @Override
+    public List<DiversityTarget> getAllTargets() {
+        return repository.findAll();
+    }
+
+    @Override
     public List<DiversityTarget> getTargetsByYear(int year) {
         return repository.findByTargetYear(year);
     }
 
+    @Override
     public void deactivateTarget(Long id) {
         if (id == null) {
             throw new ResourceNotFoundException("Target ID cannot be null");
         }
         DiversityTarget target = repository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("Target not found"));
+            .orElseThrow(() -> new ResourceNotFoundException("Target not found with id: " + id));
         target.setActive(false);
         repository.save(target);
     }
