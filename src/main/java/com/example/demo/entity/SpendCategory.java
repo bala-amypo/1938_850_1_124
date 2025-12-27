@@ -1,36 +1,41 @@
 package com.example.demo.entity;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
-import lombok.*;
+
 @Entity
 @Table(name = "spend_categories")
 public class SpendCategory {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
-    private Boolean active;
 
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
+    private Boolean active = true;
+
+    // One-to-many with PurchaseOrder
     @OneToMany(mappedBy = "category")
-    private Set<PurchaseOrder> purchaseOrders;
-    
+    @JsonIgnore
+    private Set<PurchaseOrder> purchaseOrders = new HashSet<>();
+
     public SpendCategory() {}
-    
-    public SpendCategory(Long id, String name, Boolean active, Set<PurchaseOrder> purchaseOrders) {
-        
+
+    public SpendCategory(String name) {
         this.name = name;
-        this.active = active;
-        this.purchaseOrders = purchaseOrders;
     }
 
     @PrePersist
     @PreUpdate
-    protected void preSave() {
-        if (this.active == null) this.active = true;
+    public void preSave() {
+        if (active == null) active = true;
     }
-    
-    // Getters and Setters
+
+    // Getters & Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public String getName() { return name; }

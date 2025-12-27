@@ -1,41 +1,65 @@
 package com.example.demo.entity;
 
+import com.example.demo.exception.BadRequestException;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import lombok.*;
+
 @Entity
 @Table(name = "purchase_orders")
 public class PurchaseOrder {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false, unique = true)
     private String poNumber;
+
+    @Column(nullable = false)
     private BigDecimal amount;
+
+    @Column(nullable = false)
     private LocalDate dateIssued;
+
     private String notes;
 
     @ManyToOne
-    @JoinColumn(name = "supplier_id")
+    @JoinColumn(name = "supplier_id", nullable = false)
     private Supplier supplier;
 
     @ManyToOne
-    @JoinColumn(name = "category_id")
+    @JoinColumn(name = "category_id", nullable = false)
     private SpendCategory category;
-    
+
     public PurchaseOrder() {}
-    
-    public PurchaseOrder(Long id, String poNumber, BigDecimal amount, LocalDate dateIssued, String notes, Supplier supplier, SpendCategory category) {
-        
+
+    public PurchaseOrder(String poNumber, BigDecimal amount, LocalDate dateIssued, Supplier supplier, SpendCategory category) {
         this.poNumber = poNumber;
         this.amount = amount;
         this.dateIssued = dateIssued;
-        this.notes = notes;
         this.supplier = supplier;
         this.category = category;
     }
-    
-    // Getters and Setters
+
+    @PrePersist
+    @PreUpdate
+    public void validate() {
+        if (amount.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new BadRequestException("Amount must be positive");
+        }
+        if (dateIssued.isAfter(LocalDate.now())) {
+            throw new BadRequestException("dateIssued cannot be in the future");
+        }
+        if (supplier == null || !supplier.getIsActive()) {
+            throw new BadRequestException("Supplier is inactive or null");
+        }
+        if (category == null || !category.getActive()) {
+            throw new BadRequestException("Category is inactive or null");
+        }
+    }
+
+    // Getters & Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public String getPoNumber() { return poNumber; }
