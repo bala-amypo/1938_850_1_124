@@ -2,57 +2,69 @@ package com.example.demo.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.context.request.WebRequest;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-
+    // -------------------- 404 --------------------
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleResourceNotFound(ResourceNotFoundException ex, WebRequest request) {
-        ErrorResponse error = new ErrorResponse(
-            LocalDateTime.now(), 404, "Not Found", ex.getMessage(), request.getDescription(false), null
+    public ResponseEntity<?> handleNotFound(ResourceNotFoundException ex) {
+        return buildResponse(
+                HttpStatus.NOT_FOUND,
+                "Not Found",
+                ex.getMessage()
         );
-        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponse> handleValidationErrors(MethodArgumentNotValidException ex, WebRequest request) {
-        Map<String, String> details = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach((err) -> {
-            String fieldName = ((FieldError) err).getField();
-            String errorMessage = err.getDefaultMessage();
-            details.put(fieldName, errorMessage);
-        });
-
-        ErrorResponse error = new ErrorResponse(
-            LocalDateTime.now(), 400, "Validation Error", "Invalid input data", request.getDescription(false), details
+    // -------------------- 400 --------------------
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<?> handleBadRequest(BadRequestException ex) {
+        return buildResponse(
+                HttpStatus.BAD_REQUEST,
+                "Bad Request",
+                ex.getMessage()
         );
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
-
+    // -------------------- 401 --------------------
     @ExceptionHandler(UnauthorizedException.class)
-    public ResponseEntity<ErrorResponse> handleUnauthorized(UnauthorizedException ex, WebRequest request) {
-        ErrorResponse error = new ErrorResponse(
-            LocalDateTime.now(), 401, "Unauthorized", ex.getMessage(), request.getDescription(false), null
+    public ResponseEntity<?> handleUnauthorized(UnauthorizedException ex) {
+        return buildResponse(
+                HttpStatus.UNAUTHORIZED,
+                "Unauthorized",
+                ex.getMessage()
         );
-        return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
     }
-    
+
+    // -------------------- 500 --------------------
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleGlobalException(Exception ex, WebRequest request) {
-        ErrorResponse error = new ErrorResponse(
-            LocalDateTime.now(), 500, "Internal Server Error", ex.getMessage(), request.getDescription(false), null
+    public ResponseEntity<?> handleGeneric(Exception ex) {
+        return buildResponse(
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                "Internal Server Error",
+                ex.getMessage()
         );
-        return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    // -------------------- COMMON BODY --------------------
+    private ResponseEntity<Map<String, Object>> buildResponse(
+            HttpStatus status,
+            String error,
+            String message
+    ) {
+        return ResponseEntity.status(status).body(
+                Map.of(
+                        "timestamp", LocalDateTime.now(),
+                        "status", status.value(),
+                        "error", error,
+                        "message", message,
+                        "path", "" // Swagger-friendly; optional
+                )
+        );
     }
 }
