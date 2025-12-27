@@ -23,11 +23,15 @@ public class SpendCategoryServiceImpl implements SpendCategoryService {
         return repository.save(category);
     }
 
+    // This method is useful for internal logic, but usually needs @Override 
+    // if it's in the interface
     @Override
     public List<SpendCategory> getActiveCategories() {
         return repository.findByActiveTrue();
     }
 
+    // ADDED @Override: This fixes the "cannot find symbol" in Controller
+    @Override
     public List<SpendCategory> getAllCategories() {
         return repository.findAll();
     }
@@ -38,9 +42,11 @@ public class SpendCategoryServiceImpl implements SpendCategoryService {
             throw new ResourceNotFoundException("Category ID cannot be null");
         }
         return repository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+            .orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + id));
     }
 
+    // ADDED @Override: This fixes the "cannot find symbol" in Controller
+    @Override
     public void deactivateCategory(Long id) {
         SpendCategory category = getCategoryById(id);
         category.setActive(false);
