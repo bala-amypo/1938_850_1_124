@@ -5,7 +5,11 @@ import java.util.List;
 
 public interface SupplierService {
     Supplier createSupplier(Supplier supplier);
-    Supplier getSupplier(Long id);
+    
+    // Changed from getSupplier to getSupplierById to match Controller
+    Supplier getSupplierById(Long id); 
+    
     List<Supplier> getAllSuppliers();
+    
     Supplier deactivateSupplier(Long id);
 }

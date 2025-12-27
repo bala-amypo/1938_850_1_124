@@ -11,7 +11,6 @@ import java.util.List;
 public class SupplierServiceImpl implements SupplierService {
     private final SupplierRepository supplierRepository;
 
-    // TECHNICAL CONSTRAINT: Must use Constructor Injection
     public SupplierServiceImpl(SupplierRepository supplierRepository) {
         this.supplierRepository = supplierRepository;
     }
@@ -21,11 +20,11 @@ public class SupplierServiceImpl implements SupplierService {
         return supplierRepository.save(supplier);
     }
 
-
+    // RENAMED: Changed from getSupplier to getSupplierById to fix the symbol error
     @Override
-    public Supplier getSupplier(Long id) {
+    public Supplier getSupplierById(Long id) {
         return supplierRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Supplier not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Supplier not found with id: " + id));
     }
 
     @Override
@@ -35,8 +34,8 @@ public class SupplierServiceImpl implements SupplierService {
 
     @Override
     public Supplier deactivateSupplier(Long id) {
-        // Requirement: Soft-deactivation using isActive flag
-        Supplier supplier = getSupplier(id);
+        // Updated to call the renamed method internally
+        Supplier supplier = getSupplierById(id);
         supplier.setIsActive(false);
         return supplierRepository.save(supplier);
     }
