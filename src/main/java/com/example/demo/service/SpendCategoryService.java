@@ -5,12 +5,8 @@ import java.util.List;
 
 public interface SpendCategoryService {
     SpendCategory createCategory(SpendCategory category);
-    List<SpendCategory> getAllCategories();
-    void deactivateCategory(Long id);
-    
-    // ADD THIS: Resolves errors in Controller and PurchaseOrderServiceImpl
+    SpendCategory updateCategory(Long id, SpendCategory category);
     SpendCategory getCategoryById(Long id);
-    
-    // Ensure this is here if used in Impl
-    List<SpendCategory> getActiveCategories(); 
+    List<SpendCategory> getAllCategories();
+    SpendCategory deactivateCategory(Long id);
 }
