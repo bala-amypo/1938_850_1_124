@@ -12,19 +12,19 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 public class SecurityConfig {
 
-    // ✅ REQUIRED by UserAccountServiceImpl
+    
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    // ✅ REQUIRED by AuthController (DUMMY for assignment/tests)
+    
     @Bean
     public AuthenticationManager authenticationManager() {
         return authentication -> authentication;
     }
 
-    // ✅ Minimal security (no real auth)
+    
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
