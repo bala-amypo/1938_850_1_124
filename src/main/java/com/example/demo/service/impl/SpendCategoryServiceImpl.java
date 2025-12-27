@@ -5,51 +5,47 @@ import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.SpendCategoryRepository;
 import com.example.demo.service.SpendCategoryService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+@Transactional
 public class SpendCategoryServiceImpl implements SpendCategoryService {
     private final SpendCategoryRepository repository;
     
     public SpendCategoryServiceImpl(SpendCategoryRepository repository) {
         this.repository = repository;
     }
-
+    
     @Override
     public SpendCategory createCategory(SpendCategory category) {
-        if (category == null) {
-            throw new IllegalArgumentException("Category cannot be null");
-        }
         return repository.save(category);
     }
-
-    // This method is useful for internal logic, but usually needs @Override 
-    // if it's in the interface
+    
     @Override
-    public List<SpendCategory> getActiveCategories() {
-        return repository.findByActiveTrue();
+    public SpendCategory updateCategory(Long id, SpendCategory category) {
+        SpendCategory existing = getCategoryById(id);
+        existing.setName(category.getName());
+        existing.setDescription(category.getDescription());
+        return repository.save(existing);
     }
-
-    // ADDED @Override: This fixes the "cannot find symbol" in Controller
+    
+    @Override
+    public SpendCategory getCategoryById(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+    }
+    
     @Override
     public List<SpendCategory> getAllCategories() {
         return repository.findAll();
     }
-
+    
     @Override
-    public SpendCategory getCategoryById(Long id) {
-        if (id == null) {
-            throw new ResourceNotFoundException("Category ID cannot be null");
-        }
-        return repository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + id));
-    }
-
-    // ADDED @Override: This fixes the "cannot find symbol" in Controller
-    @Override
-    public void deactivateCategory(Long id) {
-        SpendCategory category = getCategoryById(id);
+    public SpendCategory deactivateCategory(Long id) {
+        SpendCategory category = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
         category.setActive(false);
-        repository.save(category);
+        return repository.save(category);
     }
 }
