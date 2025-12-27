@@ -2,33 +2,32 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.PurchaseOrder;
 import com.example.demo.service.PurchaseOrderService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/purchase-orders")
 public class PurchaseOrderController {
 
-    private final PurchaseOrderService poService;
+    private final PurchaseOrderService service;
 
-    // ADD THIS CONSTRUCTOR: Fixes the compilation error at line 104 of your test
-    public PurchaseOrderController(PurchaseOrderService poService) {
-        this.poService = poService;
+    public PurchaseOrderController(PurchaseOrderService service) {
+        this.service = service;
     }
 
     @PostMapping
-    public ResponseEntity<PurchaseOrder> create(@RequestBody PurchaseOrder order) {
-        return ResponseEntity.ok(poService.createPurchaseOrder(order));
+    public PurchaseOrder create(@RequestBody PurchaseOrder po) {
+        return service.createPurchaseOrder(po);
     }
 
     @GetMapping("/supplier/{supplierId}")
-    public ResponseEntity<List<PurchaseOrder>> getBySupplier(@PathVariable Long supplierId) {
-        return ResponseEntity.ok(poService.getOrdersBySupplier(supplierId));
+    public List<PurchaseOrder> getBySupplier(@PathVariable Long supplierId) {
+        return service.getPurchaseOrdersBySupplier(supplierId);
     }
 
-    @GetMapping("/category/{categoryId}")
-    public ResponseEntity<List<PurchaseOrder>> getByCategory(@PathVariable Long categoryId) {
-        return ResponseEntity.ok(poService.getOrdersByCategory(categoryId));
+    @GetMapping
+    public List<PurchaseOrder> getAll() {
+        return service.getAllPurchaseOrders();
     }
 }
